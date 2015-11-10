@@ -8,18 +8,20 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
 #ifndef CURRENCY_H
 #define CURRENCY_H
+
+#include "../common.h"
 
 // List of currencies
 typedef enum {
@@ -33,7 +35,9 @@ typedef enum {
 	CURRENCY_GUILDERS,			// Dutch Gilder
 	CURRENCY_KRONA,				// Swedish Krona
 	CURRENCY_EUROS,				// Euro
-	
+	CURRENCY_WON,				// South Korean Won
+	CURRENCY_ROUBLE,			// Russian Rouble
+
 	CURRENCY_END				// Last item
 } CURRENCY_TYPE;
 
@@ -42,12 +46,15 @@ typedef enum {
 	CURRENCY_SUFFIX
 } CURRENCY_AFFIX;
 
+#define CURRENCY_SYMBOL_MAX_SIZE 8
+
 // Currency format specification - inspired by OpenTTD
 typedef struct {
 	// Rate is relative to 0.1 GBP
 	int rate;
-	char symbol[8];
+	utf8 symbol[CURRENCY_SYMBOL_MAX_SIZE];
 	int affix;
+	int stringId;
 } rct_currency_spec;
 
 // List of currency formats

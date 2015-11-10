@@ -8,20 +8,16 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _USE_MATH_DEFINES
-  #define _USE_MATH_DEFINES
-#endif
-#include <math.h>
 #include <time.h>
 #include "../addresses.h"
 #include "../object.h"
@@ -109,6 +105,8 @@ void mapgen_generate_blank(mapgen_settings *settings)
 	int x, y;
 	rct_map_element *mapElement;
 
+	map_clear_all_elements();
+
 	map_init(settings->mapSize);
 	for (y = 1; y < settings->mapSize - 1; y++) {
 		for (x = 1; x < settings->mapSize - 1; x++) {
@@ -152,6 +150,8 @@ void mapgen_generate(mapgen_settings *settings)
 			break;
 		}
 	}
+
+	map_clear_all_elements();
 
 	// Initialise the base map
 	map_init(mapSize);
@@ -352,7 +352,7 @@ static void mapgen_place_trees()
 		case TERRAIN_ICE:
 			if (numSnowTreeIds == 0)
 				break;
-			
+
 			type = snowTreeIds[rand() % numSnowTreeIds];
 			break;
 		}
@@ -620,7 +620,7 @@ static void mapgen_set_height()
 			uint8 q11 = get_height(heightX + 1, heightY + 1);
 
 			uint8 baseHeight = (q00 + q01 + q10 + q11) / 4;
-			
+
 			mapElement = map_get_surface_element_at(x, y);
 			mapElement->base_height = max(2, baseHeight * 2);
 			mapElement->clearance_height = mapElement->base_height;
@@ -739,12 +739,6 @@ static float generate(float x, float y)
 static int fast_floor(float x)
 {
 	return (x > 0) ? ((int)x) : (((int)x) - 1);
-}
-
-static int mod(int x, int m)
-{
-	int a = x % m;
-	return a < 0 ? a + m : a;
 }
 
 static float grad(int hash, float x, float y)
